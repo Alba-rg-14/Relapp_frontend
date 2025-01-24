@@ -7,6 +7,7 @@ import { TextField, IconButton } from "@mui/material";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline";
 import axios from "axios";
+import { useRouter } from "next/navigation";
 
 const LOG_BASE_API = process.env.NEXT_PUBLIC_LOG_API
 const MAPAS_BASE_API = process.env.NEXT_PUBLIC_MAPA_API;
@@ -18,7 +19,7 @@ export default function Pagina() {
   const [entidad1, setEntidad1] = useState([]);
   const [entidad2, setEntidad2] = useState({});
   const [restaurante, setRestaurante] = useState([]);
-
+  const router = useRouter();
   // Si la sesión aún está cargando, retorna un mensaje de carga
   useEffect(() => {
     if (session) {
@@ -45,6 +46,12 @@ export default function Pagina() {
       console.error("Error al obtener las entidades:", error);
     }
   }, [session]);
+
+
+  const navigateAddRestaurant = () => {
+    // Redirige a la página de añadir restaurante
+    router.push("/add-restaurant");
+  };
 
   // Fetch entidad hija
   // const fetchEntidad2 = useCallback(async (algunCampoEntidad1) => {
@@ -85,6 +92,16 @@ export default function Pagina() {
           <div className="mt-8 flex space-x-4 text-2xl">
             <span>Sobre todo a mi novio</span>
           </div>
+          <div>
+            <Button
+              className="mt-8"
+              onClick={() => {
+                navigateAddRestaurant();
+              }}
+            >
+              Añadir un nuevo restaurante
+            </Button>
+          </div>
         </div>
 
         {/* Sección derecha */}
@@ -94,34 +111,18 @@ export default function Pagina() {
             {restaurante.map((r1) => (
               <div key={r1._id} className="bg-gray-200 p-4 rounded-lg shadow-md">
                 <h3 className="text-2xl font-bold">Nombre: {r1.nombre}</h3>
+                <p className="text-lg font-semibold">Dirección: {r1.direccion}</p>
+                <p className="text-lg font-semibold">Descripción: {r1.descripcion}</p>
+
+                <p className="text-lg font-semibold">Horario: {r1.horario}</p>
+
                 <div className="mt-4">
-                  <h4 className="text-xl font-medium">Fotos:</h4>
-                  <div className="flex space-x-4">
-                    {r1.fotos?.map((foto, index) => (
-                      <img
-                        key={index}
-                        src={foto.url}
-                        alt={`Foto ${index + 1}`}
-                        className="w-32 h-32 object-cover rounded-lg"
-                      />
-                    ))}
-                  </div>
-                </div>
-                {/* Mostrar las entidades 2 */}
-                <div className="mt-6">
-                  {entidad2[r1.algunCampoEntidad1] && entidad2[r1.algunCampoEntidad1].length > 0 ? (
-                    <div className="mt-4 space-y-4">
-                      {entidad2[r1.algunCampoEntidad1].map((e2, index) => (
-                        <div key={index} className="bg-blue-100 p-4 rounded-lg shadow-md">
-                          <h3 className="text-2xl font-bold">Entidad id: {e2._id}</h3>
-                        </div>
-                      ))}
-                    </div>
-                  ) : (
-                    <div className="mt-4 text-xl font-semibold text-gray-600">
-                      No hay datos que mostrar
-                    </div>
-                  )}
+                  <h4 className="text-xl font-medium">Foto:</h4>
+                  <img
+                    src={r1.imagenURL} // Asegúrate de que este campo contiene la URL correcta
+                    alt={`Imagen de ${r1.nombre}`}
+                    className="w-32 h-32 object-cover rounded-lg"
+                  />
                 </div>
               </div>
             ))}
