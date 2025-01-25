@@ -27,11 +27,20 @@ const ImageUploader = ({ onUploadComplete }: ImageUploaderProps) => {
             });
 
             const uploadedUrl = response.data.url;
-            setImageUrl(uploadedUrl); // Guardar la URL en el estado local
 
-            // Si se proporciona un callback, llamar con la URL de la imagen
-            if (onUploadComplete) {
-                onUploadComplete(uploadedUrl);
+            // Validación: asegurarse de que la URL exista y no esté vacía
+            if (uploadedUrl) {
+                setImageUrl(uploadedUrl); // Guardar la URL en el estado local
+
+                // Si se proporciona un callback, llamar con la URL de la imagen
+                if (onUploadComplete) {
+                    onUploadComplete(uploadedUrl);
+                }
+
+                alert("¡Imagen subida con éxito!");
+            } else {
+                console.error("URL de la imagen no válida:", response.data);
+                alert("No se recibió una URL válida del servidor.");
             }
 
             alert("¡Imagen subida con éxito!");
@@ -45,7 +54,7 @@ const ImageUploader = ({ onUploadComplete }: ImageUploaderProps) => {
 
     const { getRootProps, getInputProps } = useDropzone({
         onDrop,
-        accept: "image/*",
+        accept: { 'image/*': [] },
         multiple: false, // Solo una imagen
     });
 

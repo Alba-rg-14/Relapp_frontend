@@ -54,9 +54,9 @@ export default function Pagina() {
             }
         }
 
-        // Validar URL de la imagen
-        if (!imagenURL.trim()) {
-            alert("Por favor, ingresa una URL válida para la imagen.");
+        // Validar campos obligatorios
+        if (!nombre.trim() || !direccion.trim() || !categoria.trim() || !descripcion.trim()) {
+            alert("Por favor, rellena todos los campos obligatorios.");
             return;
         }
 
@@ -82,15 +82,15 @@ export default function Pagina() {
                 },
             });
 
-            if (res.status === 201) {
+            if (res.status >= 200 && res.status < 300) {
                 alert("Restaurante añadido con éxito!");
-
+                router.push("/home");
             }
         } catch (error) {
             console.error("Error al crear el restaurante:", error);
             alert("Error al crear el restaurante.");
         }
-        router.push("/home");
+
     };
 
 
@@ -136,6 +136,7 @@ export default function Pagina() {
                             onChange={(e) => setDireccion(e.target.value)}
                             helperText="Ejemplo: Calle Mayor, 1, Madrid"
                             multiline
+                            required
                         />
                         <TextField
                             label="Telefono"
@@ -154,6 +155,7 @@ export default function Pagina() {
                             value={descripcion}
                             onChange={(e) => setDescripcion(e.target.value)}
                             multiline
+                            required
                         />
                         <FormControl>
                             <InputLabel id="categoria-label">Categoría</InputLabel>

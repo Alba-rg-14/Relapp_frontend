@@ -118,11 +118,17 @@ export default function Pagina() {
 
                 <div className="mt-4">
                   <h4 className="text-xl font-medium">Foto:</h4>
-                  <img
-                    src={r1.imagenURL} // Asegúrate de que este campo contiene la URL correcta
-                    alt={`Imagen de ${r1.nombre}`}
-                    className="w-32 h-32 object-cover rounded-lg"
-                  />
+                  {r1.imagenURL && r1.imagenURL.trim() ? (
+                    <div>
+                      <img
+                        src={r1.imagenURL}
+                        alt={`Imagen de ${r1.nombre}`}
+                        className="w-32 h-32 object-cover rounded-lg"
+                      />
+                    </div>
+                  ) : (
+                    <p style={{ marginTop: "20px" }}>No hay imagen subida.</p>
+                  )}
                 </div>
               </div>
             ))}
