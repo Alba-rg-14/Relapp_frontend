@@ -3,12 +3,10 @@ import { useSession } from "next-auth/react";
 import { useState, useEffect, useCallback } from "react";
 import { Button } from "@/components/ui/button";
 import Navbar from "@/components/navbar";
-import { TextField, IconButton } from "@mui/material";
-import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
-import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import MapWithMarkers from "@/components/MapWithMarkers";
+import Card from "@/components/Card";
 
 const LOG_BASE_API = process.env.NEXT_PUBLIC_LOG_API
 const MAPAS_BASE_API = process.env.NEXT_PUBLIC_MAPA_API;
@@ -53,30 +51,10 @@ export default function Pagina() {
     }
   }, [session]);
 
-
-
   const navigateAddRestaurant = () => {
     // Redirige a la página de añadir restaurante
     router.push("/add-restaurant");
   };
-
-  // Fetch entidad hija
-  // const fetchEntidad2 = useCallback(async (algunCampoEntidad1) => {
-  //   try {
-  //     const response = await axios.get(`${BACKEND_BASE_API}/entidad2/${algunCampoEntidad1}`, {
-  //       headers: {
-  //         Authorization: `Bearer ${session.accessToken}`,
-  //         "Content-Type": "application/json",
-  //       },
-  //     });
-  //     setEntidad2((prevEntidad2) => ({
-  //       ...prevEntidad2,
-  //       [algunCampoEntidad1]: response.data,
-  //     }));
-  //   } catch (error) {
-  //     console.error(`Error al obtener las entidades para ${algunCampoEntidad1}:`, error);
-  //   }
-  // }, [session]);
 
   useEffect(() => {
     if (session) {
@@ -84,6 +62,21 @@ export default function Pagina() {
     }
   }, [session, fetchRestaurantes]);
 
+  const handleDelete = async (id) => {
+    try {
+      await axios.delete(`${BACKEND_BASE_API}/restaurantes/eliminar/${id}`, {
+        headers: {
+          Authorization: `Bearer ${session.accessToken}`,
+          "Content-Type": "application/json",
+        },
+      });
+      alert("Restaurante eliminado correctamente");
+      fetchRestaurantes();
+    }
+    catch (error) {
+      console.error("Error al eliminar el restaurante:", error);
+    }
+  };
   return (
     <div className="flex flex-col min-h-screen bg-gray-100">
       <Navbar />
@@ -119,29 +112,24 @@ export default function Pagina() {
         <div className="right-section flex-1 bg-white rounded-3xl p-8 shadow-lg flex flex-col justify-center items-center text-center">
           <div className="space-y-6">
             {/* Mostrar las entidades 1 */}
-            {restaurante.map((r1) => (
-              <div key={r1._id} className="bg-gray-200 p-4 rounded-lg shadow-md">
-                <h3 className="text-2xl font-bold">Nombre: {r1.nombre}</h3>
-                <p className="text-lg font-semibold">Dirección: {r1.direccion}</p>
-                <p className="text-lg font-semibold">Descripción: {r1.descripcion}</p>
-
-                <p className="text-lg font-semibold">Horario: {r1.horario}</p>
-
-                <div className="mt-4">
-                  <h4 className="text-xl font-medium">Foto:</h4>
-                  {r1.imagenURL && r1.imagenURL.trim() ? (
-                    <div>
-                      <img
-                        src={r1.imagenURL}
-                        alt={`Imagen de ${r1.nombre}`}
-                        className="w-32 h-32 object-cover rounded-lg"
-                      />
-                    </div>
-                  ) : (
-                    <p style={{ marginTop: "20px" }}>No hay imagen subida.</p>
-                  )}
-                </div>
-              </div>
+            {restaurante.map((r) => (
+              <Card
+                key={r._id}
+                title={r.nombre}
+                subtitle={r.direccion}
+                image={r.imagenURL}
+                onDetailsClick={() => router.push(`/detalles/${r._id}`)} // Lógica para el botón "Ver detalles"
+                actions={[
+                  {
+                    label: "Editar",
+                    onClick: () => console.log("Editar", r._id),
+                  },
+                  {
+                    label: "Eliminar",
+                    onClick: () => handleDelete(r._id),
+                  },
+                ]}
+              />
             ))}
           </div>
         </div>

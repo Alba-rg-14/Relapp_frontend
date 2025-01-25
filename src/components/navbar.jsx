@@ -1,4 +1,5 @@
 "use client";
+
 import { useSession, signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
@@ -25,65 +26,44 @@ export default function Navbar() {
   const firstName = session?.user?.name?.split(" ")[0]; // Toma solo el primer nombre
 
   return (
-    <nav className="bg-gradient-to-r from-green-200 to-blue-200 p-4 shadow-md">
-      <div className="flex justify-between items-center max-w-screen-xl mx-auto">
-        <div className="flex items-center space-x-6">
-          {/* Logo o nombre */}
-          <h1 className="text-3xl font-bold text-blue-800 font-poppins">Mi App</h1>
-        </div>
+    <nav className="bg-pink-200 shadow-lg py-4">
+      <div className="max-w-screen-xl mx-auto px-4 flex items-center justify-between">
+        {/* Logo o título de la app */}
+        <h1 className="text-3xl font-bold text-pink-800 flex-1 text-left">Parcial 3 Alba Ruiz Gutiérrez</h1>
 
         {/* Menú de navegación */}
-        <div className="flex space-x-6">
-          {/* Modificar las rutas de los botones aquí */}
+        <div className="flex space-x-4">
           <Button
-            onClick={() => router.push("/home")} // Ruta del Botón 1
-            className="bg-blue-500 hover:bg-blue-600 text-white rounded-lg px-4 py-2 font-semibold"
+            onClick={() => router.push("/home")}
+            className="bg-white text-pink-800 border border-pink-300 rounded-full px-4 py-2 font-bold shadow transform transition-transform hover:scale-105"
           >
             Home
           </Button>
-
           <Button
-            onClick={() => router.push("/pagina1")} // Ruta del Botón 1
-            className="bg-blue-500 hover:bg-blue-600 text-white rounded-lg px-4 py-2 font-semibold"
-          >
-            Crear entidad1
-          </Button>
-
-          <Button
-            onClick={() => router.push("/pagina2")} // Ruta del Botón 2
-            className="bg-blue-500 hover:bg-blue-600 text-white rounded-lg px-4 py-2 font-semibold"
-          >
-            Crear entidad2
-          </Button>
-
-          <Button
-            onClick={() => router.push("/pagina3")} // Ruta del Botón 2
-            className="bg-blue-500 hover:bg-blue-600 text-white rounded-lg px-4 py-2 font-semibold"
+            onClick={() => router.push("/pagina3")}
+            className="bg-white text-pink-800 border border-pink-300 rounded-full px-4 py-2 font-bold shadow transform transition-transform hover:scale-105"
           >
             Filtrar con mapa
           </Button>
-
           <Button
-            onClick={() => router.push("/logsAuth")} // Ruta del Botón 2
-            className="bg-blue-500 hover:bg-blue-600 text-white rounded-lg px-4 py-2 font-semibold"
+            onClick={() => router.push("/logsAuth")}
+            className="bg-white text-pink-800 border border-pink-300 rounded-full px-4 py-2 font-bold shadow transform transition-transform hover:scale-105"
           >
             Logs
           </Button>
 
-          {/* Si el usuario está logueado, mostrar el nombre (solo primer nombre) y el botón de logout */}
+          {/* Botón de cerrar sesión */}
           {session ? (
-            <div className="flex items-center space-x-4">
-              <Button
-                onClick={handleLogout}
-                className="bg-red-500 hover:bg-red-600 text-white rounded-lg px-4 py-2 font-semibold"
-              >
-                {firstName}, cerrar sesión
-              </Button>
-            </div>
+            <Button
+              onClick={handleLogout}
+              className="bg-white text-pink-800 border border-pink-300 rounded-full px-4 py-2 font-bold shadow transform transition-transform hover:scale-105"
+            >
+              {firstName}, cerrar sesión
+            </Button>
           ) : (
             <Button
-              onClick={() => router.push("/login")} // Ruta de login si no estás logueado
-              className="bg-green-500 hover:bg-green-600 text-white rounded-lg px-4 py-2 font-semibold"
+              onClick={() => router.push("/login")}
+              className="bg-white text-pink-800 border border-pink-300 rounded-full px-4 py-2 font-bold shadow transform transition-transform hover:scale-105"
             >
               Iniciar sesión
             </Button>
