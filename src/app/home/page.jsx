@@ -8,6 +8,7 @@ import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline";
 import axios from "axios";
 import { useRouter } from "next/navigation";
+import MapWithMarkers from "@/components/MapWithMarkers";
 
 const LOG_BASE_API = process.env.NEXT_PUBLIC_LOG_API
 const MAPAS_BASE_API = process.env.NEXT_PUBLIC_MAPA_API;
@@ -20,6 +21,7 @@ export default function Pagina() {
   const [entidad2, setEntidad2] = useState({});
   const [restaurante, setRestaurante] = useState([]);
   const router = useRouter();
+  const [markers, setMarkers] = useState([]);
   // Si la sesión aún está cargando, retorna un mensaje de carga
   useEffect(() => {
     if (session) {
@@ -39,13 +41,18 @@ export default function Pagina() {
       const restaurantesData = response.data;
       setRestaurante(restaurantesData);
 
-      // Fetch entidades hijas
-      //const fetchPromises = restaurantesData.map((e1) => fetchEntidad2(e1.algunCampoEntidad1));
-      //await Promise.all(fetchPromises);
+      // Extraer las coordenadas para los marcadores
+      const markersData = restaurantesData.map((r) => ({
+        lat: r.latitud,
+        lon: r.longitud,
+        nombre: r.nombre,
+      }));
+      setMarkers(markersData); // Guardar los marcadores en el estado
     } catch (error) {
-      console.error("Error al obtener las entidades:", error);
+      console.error("Error al obtener los restaurantes:", error);
     }
   }, [session]);
+
 
 
   const navigateAddRestaurant = () => {
@@ -91,6 +98,10 @@ export default function Pagina() {
             Me encanta comer</p>
           <div className="mt-8 flex space-x-4 text-2xl">
             <span>Sobre todo a mi novio</span>
+          </div>
+          <div className="mt-8 w-full">
+            {/* Mapa con los marcadores */}
+            <MapWithMarkers markers={markers} defaultZoom={5} />
           </div>
           <div>
             <Button

@@ -1,4 +1,4 @@
-"use client"; 
+"use client";
 import { useSession, signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
@@ -35,35 +35,35 @@ export default function Navbar() {
         {/* Menú de navegación */}
         <div className="flex space-x-6">
           {/* Modificar las rutas de los botones aquí */}
-          <Button 
+          <Button
             onClick={() => router.push("/home")} // Ruta del Botón 1
             className="bg-blue-500 hover:bg-blue-600 text-white rounded-lg px-4 py-2 font-semibold"
           >
             Home
           </Button>
 
-          <Button 
+          <Button
             onClick={() => router.push("/pagina1")} // Ruta del Botón 1
             className="bg-blue-500 hover:bg-blue-600 text-white rounded-lg px-4 py-2 font-semibold"
           >
             Crear entidad1
           </Button>
 
-          <Button 
+          <Button
             onClick={() => router.push("/pagina2")} // Ruta del Botón 2
             className="bg-blue-500 hover:bg-blue-600 text-white rounded-lg px-4 py-2 font-semibold"
           >
             Crear entidad2
           </Button>
 
-          <Button 
+          <Button
             onClick={() => router.push("/pagina3")} // Ruta del Botón 2
             className="bg-blue-500 hover:bg-blue-600 text-white rounded-lg px-4 py-2 font-semibold"
           >
             Filtrar con mapa
           </Button>
-          
-          <Button 
+
+          <Button
             onClick={() => router.push("/logsAuth")} // Ruta del Botón 2
             className="bg-blue-500 hover:bg-blue-600 text-white rounded-lg px-4 py-2 font-semibold"
           >
@@ -73,8 +73,8 @@ export default function Navbar() {
           {/* Si el usuario está logueado, mostrar el nombre (solo primer nombre) y el botón de logout */}
           {session ? (
             <div className="flex items-center space-x-4">
-              <Button 
-                onClick={handleLogout} 
+              <Button
+                onClick={handleLogout}
                 className="bg-red-500 hover:bg-red-600 text-white rounded-lg px-4 py-2 font-semibold"
               >
                 {firstName}, cerrar sesión
